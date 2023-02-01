@@ -1,0 +1,36 @@
+package com.assign.employee.controller;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.assign.account.Account;
+import com.assign.employee.feign.model.AccountRestConsumer;
+import com.assign.employee.model.Employee;
+import com.assign.employee.repository.EmployeeRepository;
+
+@RestController
+@RequestMapping("/api/")
+public class EmployeeController {
+	
+	@Autowired
+	EmployeeRepository empRepo;
+	
+	@Autowired
+	AccountRestConsumer accRestConsumer;
+	
+	@GetMapping(value = "getEmployeeById")
+	public Optional<Employee> getEmployeeByID(@RequestParam("id") int empID) {
+		return empRepo.findById(empID);		
+	}
+	
+	@GetMapping(value = "/getAccountByEmployeeId")
+	public Account getAccountByEmployeeId(@RequestParam("empId") Integer empID) {
+		return accRestConsumer.getAccountByEmployeeId(empID);
+	}
+	
+}
