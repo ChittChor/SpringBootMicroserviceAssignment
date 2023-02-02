@@ -1,0 +1,26 @@
+package com.assign.accountService.util;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class DataSourceUtil {
+	
+	@Autowired
+	private ConfigUtil config;
+
+	@Bean
+	public DataSource getDataSource() {
+		@SuppressWarnings("unchecked")
+		DataSourceBuilder<DataSource> dataSourceBuilder = (DataSourceBuilder<DataSource>) DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(config.getDriverClassName());
+        dataSourceBuilder.url(config.getDBUrl());
+        dataSourceBuilder.username(config.getDBUserName());
+        dataSourceBuilder.password(config.getDBPassword());
+        return dataSourceBuilder.build();
+	}
+}
